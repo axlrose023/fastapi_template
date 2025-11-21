@@ -6,6 +6,8 @@ from dishka.integrations.fastapi import setup_dishka
 from fastapi import APIRouter, FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 
+from prometheus_fastapi_instrumentator import Instrumentator
+
 from app.api import register_routers
 from app.ioc import get_async_container
 from app.services.logging import setup_logging
@@ -51,4 +53,9 @@ def get_production_app() -> FastAPI:
     app.include_router(router)
 
     setup_dishka(get_async_container(), app)
+
+    # Setup Prometheus metrics
+    instrumentator = Instrumentator()
+    instrumentator.instrument(app).expose(app)
+
     return app
