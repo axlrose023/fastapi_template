@@ -11,10 +11,11 @@ services:
     environment:
       - APP__ENV=dev
     healthcheck:
-      test: ["CMD-SHELL", "curl -f http://localhost:${APP__API__PORT}/ping || exit 1"]
+      test: [ "CMD-SHELL", "wget --no-verbose --tries=1 -O /dev/null http://localhost:${APP__API__PORT}/ping || exit 1" ]
       interval: 10s
       timeout: 5s
       retries: 5
+      start_period: 10s
     depends_on:
       cache:
         condition: service_healthy
@@ -22,12 +23,12 @@ services:
         condition: service_healthy
       migrator:
         condition: service_completed_successfully
-  
+
   migrator:
     <<: *app
     command: [ cli, upgrade ]
     restart: "no"
-    ports: [ ]
+    ports: []
     depends_on:
       db:
         condition: service_healthy
@@ -35,12 +36,12 @@ services:
   scheduler:
     <<: *app
     command: [ taskiq, scheduler, -fsd, app.tiq:scheduler, "app.tasks" ]
-    ports: [ ]
+    ports: []
 
   tasks:
     <<: *app
     command: [ taskiq, worker, -fsd, app.tiq:broker, -w, "4", "app.tasks" ]
-    ports: [ ]
+    ports: []
 
   cache:
     image: eqalpha/keydb:latest
@@ -48,7 +49,7 @@ services:
     ports:
       - "6379:6379"
     healthcheck:
-      test: ["CMD", "keydb-cli", "ping"]
+      test: [ "CMD", "keydb-cli", "ping" ]
       interval: 5s
       timeout: 10s
       retries: 5
@@ -65,7 +66,7 @@ services:
     ports:
       - "5432:5432"
     healthcheck:
-      test: ["CMD-SHELL", "pg_isready -U ${APP__POSTGRES__USER}"]
+      test: [ "CMD-SHELL", "pg_isready -U ${APP__POSTGRES__USER}" ]
       interval: 5s
       timeout: 10s
       retries: 5

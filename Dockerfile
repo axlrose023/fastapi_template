@@ -32,7 +32,7 @@ ENV PYTHONUNBUFFERED=1 \
     PYTHONDONTWRITEBYTECODE=1 \
     PYTHONPATH=/app/src
 
-RUN apk add --no-cache build-base postgresql-dev
+RUN apk add --no-cache build-base postgresql-dev wget
 
 WORKDIR /app
 
