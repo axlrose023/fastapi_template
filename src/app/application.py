@@ -5,7 +5,6 @@ from contextlib import asynccontextmanager
 from dishka.integrations.fastapi import setup_dishka
 from fastapi import APIRouter, FastAPI
 from fastapi.middleware.cors import CORSMiddleware
-
 from prometheus_fastapi_instrumentator import Instrumentator
 
 from app.api import register_routers

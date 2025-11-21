@@ -37,12 +37,12 @@ services:
 
   scheduler:
     <<: *app
-    command: [ taskiq, scheduler, -fsd, app.tiq:scheduler, "app.tasks" ]
+    command: [ taskiq, scheduler, -fsd, "app.tiq:scheduler", "app.tasks" ]
     ports: []
 
   tasks:
     <<: *app
-    command: [ taskiq, worker, -fsd, app.tiq:broker, -w, "4", "app.tasks" ]
+    command: [ taskiq, worker, -fsd, "app.tiq:broker", -w, "4", "app.tasks" ]
     ports: []
 
   cache:

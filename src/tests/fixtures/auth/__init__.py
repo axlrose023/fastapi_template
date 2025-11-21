@@ -7,7 +7,7 @@ from tests.fixtures.users.admin import user
 @pytest_asyncio.fixture
 async def authenticated_user(
     client: AsyncClient,
-    user,
+    user,  # noqa: F811
 ) -> dict:
     """Authenticate user and return tokens."""
     login_data = {

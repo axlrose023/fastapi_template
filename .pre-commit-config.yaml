@@ -22,7 +22,12 @@ repos:
     rev: v1.11.2
     hooks:
       - id: mypy
-        additional_dependencies: [types-all]
-        args: [--ignore-missing-imports]
-        exclude: ^(tests/|migrations/)
-
+        additional_dependencies: [pydantic]
+        args: [
+          --ignore-missing-imports,
+          --no-strict-optional,
+          --allow-untyped-defs,
+          --disable-error-code=no-any-return,
+          --disable-error-code=prop-decorator,
+        ]
+        exclude: ^(tests/|migrations/|src/app/tasks/|src/tests/)

@@ -60,7 +60,7 @@ class ExampleServiceClient(HttpClient):
             path=f"/api/users/{user_id}/data",
             params={"include": "details"},
         )
-        
+
         return ExampleServiceResponse(**response.json())
 
     async def create_resource(
